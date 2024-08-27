@@ -1,0 +1,31 @@
+const sqlite3 = require('sqlite3').verbose();
+
+let db = new sqlite3.Database('./db.sqlite3', (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the SQLite database.');
+});
+
+db.serialize(() => {
+    db.run(`CREATE TABLE students (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        firstname TEXT NOT NULL,
+        lastname TEXT NOT NULL,
+        gender TEXT NOT NULL,
+        age TEXT
+    )`, (err) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            console.log('Table `students` created successfully.');
+        }
+    });
+});
+
+db.close((err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Closed the database connection.');
+});
